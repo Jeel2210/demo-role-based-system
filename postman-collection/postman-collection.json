@@ -1,0 +1,155 @@
+{
+  "info": {
+    "_postman_id": "3f1f8d47-c5e9-4b8f-8f9d-2f3b4f7c2f40",
+    "name": "Software Co - NodeJS Project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/roles", "host": ["{{baseUrl}}"], "path": ["api","roles"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"roleName\": \"Admin\",\n    \"accessModules\": [\"USER_MANAGEMENT\",\"REPORTS\"],\n    \"active\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Roles",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/roles", "host": ["{{baseUrl}}"], "path": ["api","roles"] } }
+        },
+        {
+          "name": "Get Role by ID",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/roles/:id", "host": ["{{baseUrl}}"], "path": ["api","roles",":id"] } }
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/api/roles/:id", "host": ["{{baseUrl}}"], "path": ["api","roles",":id"] },
+            "body": { "mode": "raw", "raw": "{ \"roleName\": \"SuperAdmin\", \"active\": true }" }
+          }
+        },
+        {
+          "name": "Delete Role",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/roles/:id", "host": ["{{baseUrl}}"], "path": ["api","roles",":id"] } }
+        },
+        {
+          "name": "Add Access Module",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/api/roles/:id/module", "host": ["{{baseUrl}}"], "path": ["api","roles",":id","module"] },
+            "body": { "mode": "raw", "raw": "{ \"module\": \"FINANCE\" }" }
+          }
+        },
+        {
+          "name": "Remove Access Module",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/roles/:id/module/:module", "host": ["{{baseUrl}}"], "path": ["api","roles",":id","module",":module"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/api/users/signup", "host": ["{{baseUrl}}"], "path": ["api","users","signup"] },
+            "body": { "mode": "raw", "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"123456\",\n  \"role\": \"{{roleId}}\"\n}" }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/api/users/login", "host": ["{{baseUrl}}"], "path": ["api","users","login"] },
+            "body": { "mode": "raw", "raw": "{ \"email\": \"john@example.com\", \"password\": \"123456\" }" }
+          }
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/users?q=John&page=1&limit=10", "host": ["{{baseUrl}}"], "path": ["api","users"], "query":[ {"key":"q","value":"John"},{"key":"page","value":"1"},{"key":"limit","value":"10"} ] }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"] }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"] },
+            "body": { "mode": "raw", "raw": "{ \"lastName\": \"Smith\" }" }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"] }
+          }
+        },
+        {
+          "name": "Check Access",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/users/:userId/access/check?module=USER_MANAGEMENT", "host": ["{{baseUrl}}"], "path": ["api","users",":userId","access","check"], "query":[{"key":"module","value":"USER_MANAGEMENT"}] }
+          }
+        },
+        {
+          "name": "Bulk Update Same",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/users/bulk/updateSame", "host": ["{{baseUrl}}"], "path": ["api","users","bulk","updateSame"] },
+            "body": { "mode": "raw", "raw": "{ \"filter\": {}, \"update\": { \"lastName\": \"ABC\" } }" }
+          }
+        },
+        {
+          "name": "Bulk Update Different",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/users/bulk/updateDifferent", "host": ["{{baseUrl}}"], "path": ["api","users","bulk","updateDifferent"] },
+            "body": { "mode": "raw", "raw": "{ \"operations\": [\n  { \"updateOne\": { \"filter\": { \"email\": \"john@example.com\" }, \"update\": { \"$set\": { \"firstName\": \"JohnX\" } } } },\n  { \"updateOne\": { \"filter\": { \"email\": \"jane@example.com\" }, \"update\": { \"$set\": { \"lastName\": \"DoeX\" } } } }\n]}" }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "accessToken", "value": "" },
+    { "key": "roleId", "value": "" }
+  ]
+}
